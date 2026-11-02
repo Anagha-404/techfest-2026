@@ -1,0 +1,23 @@
+# Render Blueprint for the backend API.
+# Secrets (MONGO_URI, JWT_SECRET, CLIENT_URL) are entered in the Render
+# dashboard, never written here.
+services:
+  - type: web
+    name: techfest-api
+    runtime: node
+    rootDir: techfest-backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        sync: false

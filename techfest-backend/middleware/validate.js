@@ -1,0 +1,18 @@
+const { validationResult } = require("express-validator");
+
+// Runs after express-validator rules; replies 400 with the list of errors.
+module.exports = (req, res, next) => {
+  const result = validationResult(req);
+
+  if (!result.isEmpty()) {
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: result.array().map((e) => ({
+        field: e.path,
+        message: e.msg
+      }))
+    });
+  }
+
+  next();
+};

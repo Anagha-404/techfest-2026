@@ -1,0 +1,53 @@
+name: CI
+
+# Runs on every push and on pull requests to main
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Backend - install & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: techfest-backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: techfest-backend/package-lock.json
+
+      - name: Install packages
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  frontend:
+    name: Frontend - install, lint & build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: techfest2026-react
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: techfest2026-react/package-lock.json
+
+      - name: Install packages
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
